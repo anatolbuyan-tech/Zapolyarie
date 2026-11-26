@@ -4339,7 +4339,7 @@ const NetworkManager = {
 
   sendChatText(text) {
     const p = (Game.players && Game.players[this.myPlayerIdx]) || null;
-    const name = p ? p.name : "Ð­ÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ñ";
+    const name = p ? p.name : "Экспедиция";
     const payload = {
       type: "CHAT_MESSAGE",
       playerIdx: this.myPlayerIdx,
@@ -4355,7 +4355,7 @@ const NetworkManager = {
   },
 
   displayChat(payload) {
-    Game.log(`ð¬ <b>[${payload.senderName}]</b>: ${payload.text}`);
+    Game.log(`💬 <b>[${payload.senderName}]</b>: ${payload.text}`);
     if (Game.players && Game.players[payload.playerIdx]) {
       Game.players[payload.playerIdx].chatBubble = {
         text: payload.text,
@@ -4428,7 +4428,7 @@ const OnlineLobby = {
         if (i === 0) {
           NetworkManager.lobbySlots.push({
             slotIdx: 0,
-            name: (document.getElementById("host-team-name-input") ? document.getElementById("host-team-name-input").value : "Ð¡ÐµÐ²ÐµÑÐ½ÑÐ¹ ÐÐµÑÐµÑ") || "Ð¡ÐµÐ²ÐµÑÐ½ÑÐ¹ ÐÐµÑÐµÑ",
+            name: (document.getElementById("host-team-name-input") ? document.getElementById("host-team-name-input").value : "Северный Ветер") || "Северный Ветер",
             isHost: true,
             isBot: false,
             connected: true
@@ -4436,7 +4436,7 @@ const OnlineLobby = {
         } else {
           NetworkManager.lobbySlots.push({
             slotIdx: i,
-            name: COLORS[i].name + " Ð³ÑÑÐ¿Ð¿Ð°",
+            name: COLORS[i].name + " группа",
             isHost: false,
             isBot: false,
             connected: false
@@ -4451,20 +4451,20 @@ const OnlineLobby = {
       const isHostSlot = idx === 0;
       let statusBadge = "";
       if (isHostSlot) {
-        statusBadge = `<span style="color:#f1c40f; font-weight:bold; font-size:11.5px;">ð Ð¥Ð¾ÑÑ (ÐÑ)</span>`;
+        statusBadge = `<span style="color:#f1c40f; font-weight:bold; font-size:11.5px;">👑 Хост (Вы)</span>`;
       } else if (slot.connected) {
-        statusBadge = `<span style="color:#2ecc71; font-weight:bold; font-size:11.5px;">ð¢ ÐÐ¾Ð´ÐºÐ»ÑÑÐµÐ½</span>`;
+        statusBadge = `<span style="color:#2ecc71; font-weight:bold; font-size:11.5px;">🟢 Подключен</span>`;
       } else if (slot.isBot) {
-        statusBadge = `<span style="color:#e67e22; font-weight:bold; font-size:11.5px;">ð¤ ÐÐ¾Ñ</span>`;
+        statusBadge = `<span style="color:#e67e22; font-weight:bold; font-size:11.5px;">🤖 Бот</span>`;
       } else {
-        statusBadge = `<span style="color:#a0aec0; font-size:11.5px;">â³ ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ Ð¸Ð³ÑÐ¾ÐºÐ°...</span>`;
+        statusBadge = `<span style="color:#a0aec0; font-size:11.5px;">⏳ Ожидание игрока...</span>`;
       }
 
       let roleBtn = "";
       if (!isHostSlot) {
         roleBtn = `
           <button type="button" class="btn-copy-code" style="margin-left:6px;" onclick="OnlineLobby.toggleBotSlot(${idx})">
-            ${slot.isBot ? "Ð¡Ð´ÐµÐ»Ð°ÑÑ ÑÐµÐ»Ð¾Ð²ÐµÐºÐ¾Ð¼" : "ÐÐ°Ð¼ÐµÐ½Ð¸ÑÑ Ð±Ð¾ÑÐ¾Ð¼"}
+            ${slot.isBot ? "Сделать человеком" : "Заменить ботом"}
           </button>
         `;
       }
@@ -4475,7 +4475,7 @@ const OnlineLobby = {
             <div style="width:14px; height:14px; border-radius:50%; background:${color.fill}; border:2px solid #fff;"></div>
             <div>
               <div style="font-weight:700; font-size:13px; color:#fff;">${slot.name}</div>
-              <div style="font-size:11px; color:var(--muted);">${color.name} ÑÐ¾ÑÐ¼Ð° â¢ ÐÑÑÐ¿Ð¿Ð° â${idx + 1}</div>
+              <div style="font-size:11px; color:var(--muted);">${color.name} форма • Группа №${idx + 1}</div>
             </div>
           </div>
           <div style="display:flex; align-items:center; gap:6px;">
@@ -4492,10 +4492,10 @@ const OnlineLobby = {
     if (NetworkManager.lobbySlots && NetworkManager.lobbySlots[idx]) {
       NetworkManager.lobbySlots[idx].isBot = !NetworkManager.lobbySlots[idx].isBot;
       if (NetworkManager.lobbySlots[idx].isBot) {
-        NetworkManager.lobbySlots[idx].name = "ÐÐ¾Ñ " + (idx + 1);
+        NetworkManager.lobbySlots[idx].name = "Бот " + (idx + 1);
         NetworkManager.lobbySlots[idx].connected = true;
       } else {
-        NetworkManager.lobbySlots[idx].name = COLORS[idx].name + " Ð³ÑÑÐ¿Ð¿Ð°";
+        NetworkManager.lobbySlots[idx].name = COLORS[idx].name + " группа";
         NetworkManager.lobbySlots[idx].connected = false;
       }
       this.renderSlots();
@@ -4529,10 +4529,10 @@ const OnlineLobby = {
       s = s.split("ROOM=")[1].split("&")[0];
     }
     s = s.replace(/HTTPS?:\/\/[^\s]+/gi, "");
-    s = s.replace(/Ð/g, "K").replace(/Ð¥/g, "H").replace(/Ð/g, "I")
-         .replace(/Ð/g, "A").replace(/Ð/g, "B").replace(/Ð/g, "E")
-         .replace(/Ð/g, "M").replace(/Ð/g, "O").replace(/Ð /g, "P")
-         .replace(/Ð¡/g, "C").replace(/Ð¢/g, "T");
+    s = s.replace(/К/g, "K").replace(/Х/g, "H").replace(/И/g, "I")
+         .replace(/А/g, "A").replace(/В/g, "B").replace(/Е/g, "E")
+         .replace(/М/g, "M").replace(/О/g, "O").replace(/Р/g, "P")
+         .replace(/С/g, "C").replace(/Т/g, "T");
     s = s.replace(/[^A-Z0-9]/g, "");
     if (s.startsWith("KHI")) {
       s = s.substring(3);
@@ -4586,20 +4586,20 @@ const OnlineLobby = {
     const container = document.getElementById("guest-slots-list");
     if (!container || !slots) return;
     let html = `<div style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.12); padding-top:10px;">
-      <div style="font-size:12px; color:var(--muted); margin-bottom:6px; font-weight:bold;">Ð£ÑÐ°ÑÑÐ½Ð¸ÐºÐ¸ ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ð¸:</div>`;
+      <div style="font-size:12px; color:var(--muted); margin-bottom:6px; font-weight:bold;">Участники экспедиции:</div>`;
     slots.forEach((s, idx) => {
       const color = COLORS[idx] || COLORS[0];
       const isMe = idx === NetworkManager.myPlayerIdx;
       let badge = "";
-      if (s.isHost) badge = `<span style="color:#f1c40f; font-weight:bold; font-size:11px;">ð ÐÐ¾Ð¼Ð°Ð½Ð´Ð¸Ñ</span>`;
-      else if (isMe) badge = `<span style="color:#2ecc71; font-weight:bold; font-size:11px;">ð¤ ÐÑ</span>`;
-      else if (s.connected) badge = `<span style="color:#2ecc71; font-size:11px;">ð¢ Ð Ð¸Ð³ÑÐµ</span>`;
-      else if (s.isBot) badge = `<span style="color:#e67e22; font-size:11px;">ð¤ ÐÐ¾Ñ</span>`;
-      else badge = `<span style="color:#a0aec0; font-size:11px;">â³ ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ</span>`;
+      if (s.isHost) badge = `<span style="color:#f1c40f; font-weight:bold; font-size:11px;">👑 Командир</span>`;
+      else if (isMe) badge = `<span style="color:#2ecc71; font-weight:bold; font-size:11px;">👤 Вы</span>`;
+      else if (s.connected) badge = `<span style="color:#2ecc71; font-size:11px;">🟢 В игре</span>`;
+      else if (s.isBot) badge = `<span style="color:#e67e22; font-size:11px;">🤖 Бот</span>`;
+      else badge = `<span style="color:#a0aec0; font-size:11px;">⏳ Ожидание</span>`;
 
       html += `
         <div style="display:flex; align-items:center; justify-content:space-between; padding:6px 10px; margin-bottom:4px; background:rgba(255,255,255,0.05); border-left:3px solid ${color.fill}; border-radius:4px;">
-          <div style="font-size:12.5px; font-weight:600; color:#fff;">${s.name} ${isMe ? '(ÐÑ)' : ''}</div>
+          <div style="font-size:12.5px; font-weight:600; color:#fff;">${s.name} ${isMe ? "(Вы)" : ""}</div>
           <div>${badge}</div>
         </div>
       `;
@@ -4610,12 +4610,12 @@ const OnlineLobby = {
 
   createRoom() {
     if (typeof Paho === "undefined") {
-      this.showHostStatus("error", "â ï¸ Ð¡ÐµÑÐµÐ²Ð°Ñ Ð±Ð¸Ð±Ð»Ð¸Ð¾ÑÐµÐºÐ° ÐµÑÐµ Ð·Ð°Ð³ÑÑÐ¶Ð°ÐµÑÑÑ Ð¸Ð»Ð¸ Ð½ÐµÑ Ð¿Ð¾Ð´ÐºÐ»ÑÑÐµÐ½Ð¸Ñ Ðº Ð¸Ð½ÑÐµÑÐ½ÐµÑÑ. ÐÐ¾Ð´Ð¾Ð¶Ð´Ð¸ÑÐµ Ð½ÐµÑÐºÐ¾Ð»ÑÐºÐ¾ ÑÐµÐºÑÐ½Ð´ Ð¸ Ð¿Ð¾Ð¿ÑÐ¾Ð±ÑÐ¹ÑÐµ ÑÐ½Ð¾Ð²Ð°.");
+      this.showHostStatus("error", "⚠️ Сетевая библиотека еще загружается или нет подключения к интернету. Подождите несколько секунд и попробуйте снова.");
       return;
     }
     const countSelect = document.getElementById("online-count-select");
     const count = countSelect ? parseInt(countSelect.value) : 3;
-    const hostTeamName = (document.getElementById("host-team-name-input") ? document.getElementById("host-team-name-input").value : "").trim() || "Ð¡ÐµÐ²ÐµÑÐ½ÑÐ¹ ÐÐµÑÐµÑ";
+    const hostTeamName = (document.getElementById("host-team-name-input") ? document.getElementById("host-team-name-input").value : "").trim() || "Северный Ветер";
 
     NetworkManager.disconnect();
 
@@ -4629,9 +4629,9 @@ const OnlineLobby = {
     const btnCreate = document.getElementById("btn-create-room");
     if (btnCreate) {
       btnCreate.setAttribute("disabled", "true");
-      btnCreate.innerText = "ð¡ ÐÐ¾Ð´ÐºÐ»ÑÑÐµÐ½Ð¸Ðµ Ðº ÑÐµÑÐµÐ²Ð¾Ð¼Ñ Ð±ÑÐ¾ÐºÐµÑÑ...";
+      btnCreate.innerText = "📡 Подключение к сетевому брокеру...";
     }
-    this.showHostStatus("info", "ð ÐÐ¾Ð´ÐºÐ»ÑÑÐµÐ½Ð¸Ðµ Ðº Ð·Ð°ÑÐ¸ÑÑÐ½Ð½Ð¾Ð¼Ñ Ð±ÑÐ¾ÐºÐµÑÑ ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ð¹ (WSS)...");
+    this.showHostStatus("info", "🔄 Подключение к защищённому брокеру экспедиций (WSS)...");
 
     const clientId = "khibiny_host_" + roomCode + "_" + Math.random().toString(16).substr(2, 6);
 
@@ -4657,7 +4657,7 @@ const OnlineLobby = {
         this.renderSlots();
         this.checkCanStart();
 
-        this.showHostStatus("success", `ð¢ <b>ÐÐ¾Ð¼Ð½Ð°ÑÐ° Ð³Ð¾ÑÐ¾Ð²Ð°!</b> ÐÐ¾Ð´ ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ð¸: <span style="font-size:16px; font-weight:bold; color:#f1c40f;">${roomCode}</span>. ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ ÑÑÐ°ÑÑÐ½Ð¸ÐºÐ¾Ð²...`);
+        this.showHostStatus("success", `🟢 <b>Комната готова!</b> Код экспедиции: <span style="font-size:16px; font-weight:bold; color:#f1c40f;">${roomCode}</span>. Ожидание участников...`);
 
         // Heartbeat to keep guests updated
         if (this.heartbeatTimer) clearInterval(this.heartbeatTimer);
@@ -4677,9 +4677,9 @@ const OnlineLobby = {
         console.error("MQTT Host Error:", err);
         if (btnCreate) {
           btnCreate.removeAttribute("disabled");
-          btnCreate.innerText = "â ÐÑÐ¸Ð±ÐºÐ° ÑÐ¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ñ. ÐÐ¾Ð¿ÑÐ¾Ð±Ð¾Ð²Ð°ÑÑ ÑÐ½Ð¾Ð²Ð°";
+          btnCreate.innerText = "❌ Ошибка соединения. Попробовать снова";
         }
-        this.showHostStatus("error", "â ÐÐµ ÑÐ´Ð°Ð»Ð¾ÑÑ Ð¿Ð¾Ð´ÐºÐ»ÑÑÐ¸ÑÑÑÑ Ðº ÑÐµÑÐµÐ²Ð¾Ð¼Ñ Ð±ÑÐ¾ÐºÐµÑÑ. ÐÑÐ¾Ð²ÐµÑÑÑÐµ Ð¸Ð½ÑÐµÑÐ½ÐµÑ.");
+        this.showHostStatus("error", "❌ Не удалось подключиться к сетевому брокеру. Проверьте интернет.");
       }
     );
   },
@@ -4697,7 +4697,7 @@ const OnlineLobby = {
       }
       if (assignedIdx !== -1) {
         NetworkManager.lobbySlots[assignedIdx].connected = true;
-        NetworkManager.lobbySlots[assignedIdx].name = data.teamName || ("ÐÑÑÐ¿Ð¿Ð° " + (assignedIdx + 1));
+        NetworkManager.lobbySlots[assignedIdx].name = data.teamName || ("Группа " + (assignedIdx + 1));
         NetworkManager.lobbySlots[assignedIdx].guestId = data.guestId;
 
         this.renderSlots();
@@ -4710,12 +4710,12 @@ const OnlineLobby = {
           roomCode: NetworkManager.roomCode,
           slots: NetworkManager.lobbySlots
         });
-        this.showHostStatus("info", `ð¢ ÐÐ³ÑÐ¾Ðº <b>${NetworkManager.lobbySlots[assignedIdx].name}</b> Ð²Ð¾ÑÐµÐ» Ð² ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ñ!`);
+        this.showHostStatus("info", `🟢 Игрок <b>${NetworkManager.lobbySlots[assignedIdx].name}</b> вошел в экспедицию!`);
       } else {
         NetworkManager.broadcast({
           type: "JOIN_REJECTED",
           guestId: data.guestId,
-          reason: "Ð ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ð¸ Ð½ÐµÑ ÑÐ²Ð¾Ð±Ð¾Ð´Ð½ÑÑ Ð¼ÐµÑÑ!"
+          reason: "В экспедиции нет свободных мест!"
         });
       }
     } else if (data.type === "CLIENT_ACTION") {
@@ -4728,7 +4728,7 @@ const OnlineLobby = {
 
   joinRoom() {
     if (typeof Paho === "undefined") {
-      this.showJoinStatus("error", "ÐÐ¸Ð±Ð»Ð¸Ð¾ÑÐµÐºÐ° ÑÐµÑÐ¸ ÐµÑÐµ Ð·Ð°Ð³ÑÑÐ¶Ð°ÐµÑÑÑ. ÐÐ¾Ð¶Ð°Ð»ÑÐ¹ÑÑÐ°, Ð¿Ð¾Ð´Ð¾Ð¶Ð´Ð¸ÑÐµ Ð½ÐµÑÐºÐ¾Ð»ÑÐºÐ¾ ÑÐµÐºÑÐ½Ð´ Ð¸ Ð¿Ð¾Ð¿ÑÐ¾Ð±ÑÐ¹ÑÐµ ÑÐ½Ð¾Ð²Ð°.");
+      this.showJoinStatus("error", "Библиотека сети еще загружается. Пожалуйста, подождите несколько секунд и попробуйте снова.");
       return;
     }
 
@@ -4737,22 +4737,22 @@ const OnlineLobby = {
     const cleanCode = this.normalizeCode(rawCode);
 
     if (!cleanCode) {
-      this.showJoinStatus("error", "ÐÐ¾Ð¶Ð°Ð»ÑÐ¹ÑÑÐ°, Ð²Ð²ÐµÐ´Ð¸ÑÐµ ÐºÐ¾Ð´ ÐºÐ¾Ð¼Ð½Ð°ÑÑ (Ð½Ð°Ð¿ÑÐ¸Ð¼ÐµÑ: 58291 Ð¸Ð»Ð¸ KHI-58291).");
+      this.showJoinStatus("error", "Пожалуйста, введите код комнаты (например: 58291 или KHI-58291).");
       return;
     }
 
     const inpTeam = document.getElementById("inp-join-team");
-    const teamName = (inpTeam ? inpTeam.value : "").trim() || "ÐÐ¾Ð»ÑÑÐ½ÑÐµ ÐÐ¾Ð»ÐºÐ¸";
+    const teamName = (inpTeam ? inpTeam.value : "").trim() || "Полярные Волки";
 
     NetworkManager.disconnect();
 
     const btnJoin = document.getElementById("btn-do-join");
     if (btnJoin) {
       btnJoin.setAttribute("disabled", "true");
-      btnJoin.innerText = "â³ ÐÐ¾Ð´ÐºÐ»ÑÑÐµÐ½Ð¸Ðµ Ðº ÐºÐ¾Ð¼Ð½Ð°ÑÐµ " + cleanCode + "...";
+      btnJoin.innerText = "⏳ Подключение к комнате " + cleanCode + "...";
     }
 
-    this.showJoinStatus("info", `ð <b>Ð¨Ð°Ð³ 1/2:</b> ÐÐ¾Ð´ÐºÐ»ÑÑÐµÐ½Ð¸Ðµ Ðº ÑÐµÑÐµÐ²Ð¾Ð¼Ñ Ð±ÑÐ¾ÐºÐµÑÑ (WSS)...`);
+    this.showJoinStatus("info", `🔄 <b>Шаг 1/2:</b> Подключение к сетевому брокеру (WSS)...`);
 
     NetworkManager.isOnline = true;
     NetworkManager.isHost = false;
@@ -4767,7 +4767,7 @@ const OnlineLobby = {
       (client) => {
         client.subscribe("khibiny/room/" + cleanCode + "/to_guests", { qos: 0 });
 
-        this.showJoinStatus("info", `ð¤ <b>Ð¨Ð°Ð³ 2/2:</b> Ð¡Ð¾Ð³Ð»Ð°ÑÐ¾Ð²Ð°Ð½Ð¸Ðµ Ð¼ÐµÑÑÐ° Ð² Ð³ÑÑÐ¿Ð¿Ðµ...`);
+        this.showJoinStatus("info", `🤝 <b>Шаг 2/2:</b> Согласование места в группе...`);
 
         NetworkManager.sendToHost({
           type: "JOIN_REQUEST",
@@ -4780,10 +4780,10 @@ const OnlineLobby = {
       },
       (err) => {
         console.error("MQTT Guest Error:", err);
-        this.showJoinStatus("error", "â ÐÐµ ÑÐ´Ð°Ð»Ð¾ÑÑ Ð¿Ð¾Ð´ÐºÐ»ÑÑÐ¸ÑÑÑÑ Ðº ÑÐµÑÐ²ÐµÑÑ. ÐÑÐ¾Ð²ÐµÑÑÑÐµ ÐºÐ¾Ð´ ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ð¸ Ð¸ Ð¸Ð½ÑÐµÑÐ½ÐµÑ.");
+        this.showJoinStatus("error", "❌ Не удалось подключиться к серверу. Проверьте код экспедиции и интернет.");
         if (btnJoin) {
           btnJoin.removeAttribute("disabled");
-          btnJoin.innerText = "ð ÐÐ¾Ð¿ÑÐ¾Ð±Ð¾Ð²Ð°ÑÑ ÑÐ½Ð¾Ð²Ð°";
+          btnJoin.innerText = "🔄 Попробовать снова";
         }
       }
     );
@@ -4797,7 +4797,7 @@ const OnlineLobby = {
       NetworkManager.myPlayerIdx = data.slotIdx;
       NetworkManager.lobbySlots = data.slots;
       const color = COLORS[data.slotIdx] || COLORS[1];
-      this.showJoinStatus("success", `ð¢ <b>ÐÑ Ð¿ÑÐ¸Ð½ÑÑÑ Ð² ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ñ!</b><br>ÐÐ°Ñ ÑÐ»Ð¾Ñ: <b>Ð¡Ð»Ð¾Ñ ${data.slotIdx + 1} (${color.name})</b>.<br>ÐÐ¶Ð¸Ð´Ð°Ð½Ð¸Ðµ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ ÐºÐ¾Ð¼Ð°Ð½Ð´Ð¸ÑÐ°...`);
+      this.showJoinStatus("success", `🟢 <b>Вы приняты в экспедицию!</b><br>Ваш слот: <b>Слот ${data.slotIdx + 1} (${color.name})</b>.<br>Ожидание команды командира...`);
       this.renderGuestSlots(data.slots);
 
       const btnJoin = document.getElementById("btn-do-join");
@@ -4805,11 +4805,11 @@ const OnlineLobby = {
 
     } else if (data.type === "JOIN_REJECTED") {
       if (data.guestId && data.guestId !== NetworkManager.guestId) return;
-      this.showJoinStatus("error", data.reason || "Ð­ÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ñ Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð°!");
+      this.showJoinStatus("error", data.reason || "Экспедиция заполнена!");
       const btnJoin = document.getElementById("btn-do-join");
       if (btnJoin) {
         btnJoin.removeAttribute("disabled");
-        btnJoin.innerText = "ð¤ ÐÑÐ¸ÑÐ¾ÐµÐ´Ð¸Ð½Ð¸ÑÑÑÑ Ðº ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ð¸";
+        btnJoin.innerText = "🤝 Присоединиться к экспедиции";
       }
 
     } else if (data.type === "LOBBY_UPDATE") {
@@ -4882,12 +4882,12 @@ const OnlineLobby = {
     if (!code) return;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(code).then(() => {
-        alert("ÐÐ¾Ð´ ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ð¸ " + code + " ÑÐºÐ¾Ð¿Ð¸ÑÐ¾Ð²Ð°Ð½ Ð² Ð±ÑÑÐµÑ Ð¾Ð±Ð¼ÐµÐ½Ð°!");
+        alert("Код экспедиции " + code + " скопирован в буфер обмена!");
       }).catch(() => {
-        prompt("Ð¡ÐºÐ¾Ð¿Ð¸ÑÑÐ¹ÑÐµ ÐºÐ¾Ð´ ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ð¸:", code);
+        prompt("Скопируйте код экспедиции:", code);
       });
     } else {
-      prompt("Ð¡ÐºÐ¾Ð¿Ð¸ÑÑÐ¹ÑÐµ ÐºÐ¾Ð´ ÑÐºÑÐ¿ÐµÐ´Ð¸ÑÐ¸Ð¸:", code);
+      prompt("Скопируйте код экспедиции:", code);
     }
   },
 
@@ -4896,12 +4896,12 @@ const OnlineLobby = {
     if (!inp || !inp.value) return;
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(inp.value).then(() => {
-        alert("Ð¡ÑÑÐ»ÐºÐ°-Ð¿ÑÐ¸Ð³Ð»Ð°ÑÐµÐ½Ð¸Ðµ ÑÐºÐ¾Ð¿Ð¸ÑÐ¾Ð²Ð°Ð½Ð° Ð² Ð±ÑÑÐµÑ Ð¾Ð±Ð¼ÐµÐ½Ð°! ÐÑÐ¿ÑÐ°Ð²ÑÑÐµ ÐµÑ Ð´ÑÑÐ·ÑÑÐ¼.");
+        alert("Ссылка-приглашение скопирована в буфер обмена! Отправьте её друзьям.");
       }).catch(() => {
-        prompt("Ð¡ÐºÐ¾Ð¿Ð¸ÑÑÐ¹ÑÐµ ÑÑÑÐ»ÐºÑ Ð´Ð»Ñ Ð´ÑÑÐ·ÐµÐ¹:", inp.value);
+        prompt("Скопируйте ссылку для друзей:", inp.value);
       });
     } else {
-      prompt("Ð¡ÐºÐ¾Ð¿Ð¸ÑÑÐ¹ÑÐµ ÑÑÑÐ»ÐºÑ Ð´Ð»Ñ Ð´ÑÑÐ·ÐµÐ¹:", inp.value);
+      prompt("Скопируйте ссылку для друзей:", inp.value);
     }
   },
 
@@ -4917,7 +4917,7 @@ const OnlineLobby = {
     for (let i = 0; i < count; i++) {
       const slot = NetworkManager.lobbySlots[i];
       const isBot = slot.isBot;
-      const name = (slot.name || "").trim() || (isBot ? `ÐÐ¾Ñ ${i+1}` : `ÐÑÑÐ¿Ð¿Ð° ${i+1}`);
+      const name = (slot.name || "").trim() || (isBot ? `Бот ${i+1}` : `Группа ${i+1}`);
       players.push({
         id: i,
         name: name,
